@@ -57,10 +57,6 @@ if st.button('Recommend'):
         with cols[i]:
             st.image(get_movie_poster(movie_df.iloc[idx].movie_id))
             st.caption(movie_df.iloc[idx].title)
-```
-
-**`requirements.txt` se `gdown` hata do — ab zaroorat nahi:**
-```
 streamlit
 pandas
 scikit-learn
