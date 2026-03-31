@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 def load_data():
     if not os.path.exists("similarity.pkl"):
         gdown.download("https://drive.google.com/uc?id=10MqN_cT1Z1H9SNDBOAVqzr2zHrRxWt3b", "similarity.pkl", quiet=False)
-    movie_df     = pickle.load(open(os.path.join(BASE_DIR, "movies.pkl"), "rb"))
+    movie_df = pickle.load(open(os.path.join(BASE_DIR, "movies.pkl,"), "rb"))
     dist_matrix  = pickle.load(open("similarity.pkl", "rb"))
     return movie_df, dist_matrix
 
