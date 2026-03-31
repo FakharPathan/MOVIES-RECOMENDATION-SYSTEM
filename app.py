@@ -3,16 +3,32 @@ import pickle
 import pandas as pd
 import requests
 import os
-import gdown
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 @st.cache_resource
 def load_data():
-    if not os.path.exists("similarity.pkl") or os.path.getsize("similarity.pkl") < 1000000:
-        gdown.download("https://drive.google.com/uc?id=10MqN_cT1Z1H9SNDBOAVqzr2zHrRxWt3b", "similarity.pkl", quiet=False)
+    sim_path = "/tmp/similarity.pkl"
+    if not os.path.exists(sim_path) or os.path.getsize(sim_path) < 1000000:
+        file_id = "10MqN_cT1Z1H9SNDBOAVqzr2zHrRxWt3b"
+        session = requests.Session()
+        url     = f"https://drive.google.com/uc?export=download&id={file_id}"
+        resp    = session.get(url, stream=True)
+        # Large file confirm token handle karo
+        token   = None
+        for key, value in resp.cookies.items():
+            if key.startswith("download_warning"):
+                token = value
+        if token:
+            url  = f"https://drive.google.com/uc?export=download&id={file_id}&confirm={token}"
+            resp = session.get(url, stream=True)
+        with open(sim_path, "wb") as f:
+            for chunk in resp.iter_content(32768):
+                if chunk:
+                    f.write(chunk)
+
     movie_df    = pickle.load(open(os.path.join(BASE_DIR, "movies.pkl,"), "rb"))
-    dist_matrix = pickle.load(open("similarity.pkl", "rb"))
+    dist_matrix = pickle.load(open(sim_path, "rb"))
     return movie_df, dist_matrix
 
 movie_df, dist_matrix = load_data()
@@ -41,3 +57,11 @@ if st.button('Recommend'):
         with cols[i]:
             st.image(get_movie_poster(movie_df.iloc[idx].movie_id))
             st.caption(movie_df.iloc[idx].title)
+```
+
+**`requirements.txt` se `gdown` hata do — ab zaroorat nahi:**
+```
+streamlit
+pandas
+scikit-learn
+requests
