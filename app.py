@@ -37,4 +37,7 @@ if st.button('Recommend'):
         top_five  = sorted(list(enumerate(scores)), reverse=True, key=lambda x: x[1])[1:6]
 
     cols = st.columns(5)
-    for i, (idx, score) in enumera
+    for i, (idx, score) in enumerate(top_five):
+        with cols[i]:
+            st.image(get_movie_poster(movie_df.iloc[idx].movie_id))
+            st.caption(movie_df.iloc[idx].title)
