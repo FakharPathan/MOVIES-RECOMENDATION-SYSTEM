@@ -6,7 +6,7 @@ import requests
 @st.cache_resource
 def load_data():
     # Make sure these names match the files in your folder EXACTLY
-    movies = pickle.load(open('movies_dict.pkl', 'rb')) 
+    movies = pickle.load(open('movies.pkl', 'rb')) 
     similarity = pickle.load(open('similarity.pkl', 'rb'))
     return movies, similarity
 def fetch_poster(movie_id):
