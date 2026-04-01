@@ -18,7 +18,7 @@ def load_data():
             quiet=False,
             fuzzy=True
         )
-    movies_dict = pickle.load(open(os.path.join(BASE_DIR, "movies_dict.pkl"), "rb"))
+    movies_dict = pickle.load(open(os.path.join(BASE_DIR, "movies_dict.pkl,"), "rb"))
     movies      = pd.DataFrame(movies_dict)
     similarity  = np.load(sim_path)
     return movies, similarity
