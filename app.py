@@ -12,7 +12,12 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 def load_data():
     sim_path = "/tmp/similarity.npy"
     if not os.path.exists(sim_path) or os.path.getsize(sim_path) < 1000000:
-        gdown.download("https://drive.google.com/uc?id=1qUpFEbbyF6JVMlFELYHbHY3_cvbXJXOa", sim_path, quiet=False)
+        gdown.download(
+            "https://drive.google.com/uc?id=1qUpFEbbyF6JVMlFELYHbHY3_cvbXJXOa",
+            sim_path,
+            quiet=False,
+            fuzzy=True
+        )
     movies_dict = pickle.load(open(os.path.join(BASE_DIR, "movies_dict.pkl"), "rb"))
     movies      = pd.DataFrame(movies_dict)
     similarity  = np.load(sim_path)
